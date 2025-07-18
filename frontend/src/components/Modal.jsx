@@ -1,6 +1,7 @@
 import React from "react";
 
 const Modal = ({ children, onClose, isOpen, hideHeader, title }) => {
+  if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-black/40">
       {/* Modal content */}
@@ -31,7 +32,7 @@ const Modal = ({ children, onClose, isOpen, hideHeader, title }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d="M1 1l6 6m0 6M7 7l6-6M7 7l-6 6 "
+              d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"
             />
           </svg>
         </button>
