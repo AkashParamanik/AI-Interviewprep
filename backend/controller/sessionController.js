@@ -30,7 +30,11 @@ exports.createSession = async (req, res) => {
     await session.save();
     res.status(200).json({ success: true, session });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
@@ -45,7 +49,11 @@ exports.getMySession = async (req, res) => {
 
     res.status(200).json(sessions);
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
@@ -65,7 +73,11 @@ exports.getSessionById = async (req, res) => {
 
     res.status(200).json({ success: true, session });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
