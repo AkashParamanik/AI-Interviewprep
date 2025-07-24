@@ -22,7 +22,7 @@ exports.addQuestionsToSession = async (req, res) => {
         answer: q.answer,
       }))
     );
-    console.log(session.questions);
+    // console.log(session.questions);
 
     //update session to include new question IDs
 
@@ -54,6 +54,13 @@ exports.togglePinQuestion = async (req, res) => {
 
 exports.updateQuestionNote = async (req, res) => {
   try {
+    const { note } = req.body;
+    const question = await Question.findById(req.params.id);
+    if (!question)
+      return res.status(404).json({ message: "Question not found." });
+    question.note = note || "";
+    await question.save();
+    res.status(200).json(question);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
