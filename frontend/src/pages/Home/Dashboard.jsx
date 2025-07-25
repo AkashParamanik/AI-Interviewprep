@@ -1,7 +1,10 @@
 import React from "react";
-
+import { LuPlus } from "react-icons/lu";
+import { CARD_BG } from "../../utils/data";
+import toast from "react-hot-toast";
+import DashboardLayout from "../../components/Layouts/DashboardLayout";
 const Dashboard = () => {
-  return <div>dash</div>;
+  return <DashboardLayout>Dashboard</DashboardLayout>;
 };
 
 export default Dashboard;

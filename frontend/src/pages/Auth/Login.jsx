@@ -11,7 +11,7 @@ const Login = ({ setCurrentPage }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const updateUser = useContext(UserContext);
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
   //handle login form
   const handleLogin = async (e) => {
@@ -34,6 +34,7 @@ const Login = ({ setCurrentPage }) => {
       });
 
       const { token } = response.data;
+      console.log(response.data.token);
 
       if (token) {
         localStorage.setItem("token", token);
@@ -44,7 +45,7 @@ const Login = ({ setCurrentPage }) => {
       if (error.response && error.response.data.message) {
         setError(error.response.data.message);
       } else {
-        setError("Something went wrong. Please try again");
+        setError(`Something went wrong. Please try again ${error}`);
       }
     }
   };
