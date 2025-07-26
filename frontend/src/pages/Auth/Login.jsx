@@ -34,7 +34,7 @@ const Login = ({ setCurrentPage }) => {
       });
 
       const { token } = response.data;
-      console.log(response.data.token);
+      // console.log(response.data.token);
 
       if (token) {
         localStorage.setItem("token", token);

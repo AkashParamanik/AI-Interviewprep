@@ -41,11 +41,13 @@ exports.createSession = async (req, res) => {
 //get all session by login user GET /api/sessions/my-session
 exports.getMySession = async (req, res) => {
   try {
+    // console.log("All sessions:", req.user);
+
     const sessions = await Session.find({ user: req.user.id })
       .sort({ createdAt: -1 })
       .populate("questions");
     // const sessions = await Session.find().limit(5);
-    // console.log("All sessions:", sessions);
+    console.log("All sessions:", sessions);
 
     res.status(200).json(sessions);
   } catch (error) {
