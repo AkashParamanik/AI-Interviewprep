@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Inputs/Input";
 import SpinnerLoader from "../../components/Loaders/SpinnerLoader";
+import axiosInstane from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const CreateSessionForm = () => {
   const [formData, setFormData] = useState({
@@ -29,6 +31,36 @@ const CreateSessionForm = () => {
       return;
     }
     setError("");
+    setIsLoading(true);
+    try {
+      const aiResponse = await axiosInstane.post(
+        API_PATHS.AI.GENERATE_QUESTIONS,
+        {
+          role,
+          experience,
+          topicsToFocus,
+          numberOfQuestions: 10,
+        }
+      );
+
+      const generatedQuestions = aiResponse.data;
+      const response = await axiosInstane.post(API_PATHS.SESSION.CREATE, {
+        ...formData,
+        questions: generatedQuestions,
+      });
+      console.log(response.data?.session?._id);
+      if (response.data?.session?._id) {
+        navigate(`/interview-prep/${response.data?.session?._id}`);
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="w-[90vw] md:w-[35vw] p-7 flex flex-col justify-center  ">

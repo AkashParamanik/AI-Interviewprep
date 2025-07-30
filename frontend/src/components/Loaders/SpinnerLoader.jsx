@@ -39,7 +39,7 @@ const Spinnerloader = () => {
         />
       </svg>
 
-      <span class="sr-only">loading...</span>
+      <span className="sr-only">loading...</span>
     </div>
   );
 };

@@ -47,7 +47,7 @@ exports.getMySession = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate("questions");
     // const sessions = await Session.find().limit(5);
-    console.log("All sessions:", sessions);
+    // console.log("All sessions:", sessions);
 
     res.status(200).json(sessions);
   } catch (error) {

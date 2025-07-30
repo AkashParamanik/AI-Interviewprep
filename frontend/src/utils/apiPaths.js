@@ -11,7 +11,7 @@ export const API_PATHS = {
   },
   AI: {
     GENERATE_QUESTIONS: "/api/ai/generate-questions",
-    GENERATE_EXPLANATION: "/api/ai/generate-explanation",
+    GENERATE_EXPLANATION: "/api/ai/generate-explanations",
   },
   SESSION: {
     CREATE: "/api/sessions/create",
@@ -21,7 +21,7 @@ export const API_PATHS = {
   },
   QUESTION: {
     ADD_TO_SESSION: "/api/questions/add",
-    PIN: (id) => `/api/questions.${id}/pin`,
-    UPDATE_NOTE: (id) => `/api/questions.${id}/note`,
+    PIN: (id) => `/api/questions/${id}/pin`,
+    UPDATE_NOTE: (id) => `/api/questions/${id}/note`,
   },
 };

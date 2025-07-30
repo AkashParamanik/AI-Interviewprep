@@ -35,7 +35,7 @@ axiosInstane.interceptors.response.use(
   (error) => {
     if (error.response) {
       if (error.response.status === 401) {
-        window.location.href("/");
+        window.location.href = "/";
       } else if (error.response.status === 500) {
         console.error("Server Error");
       }
