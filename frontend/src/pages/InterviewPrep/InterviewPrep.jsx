@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { LuCircleAlert, LuListCollapse } from "react-icons/lu";
-import Spinnerloader from "../../components/Loaders/SpinnerLoader";
 import { toast } from "react-hot-toast";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import RoleInfoHeader from "./components/RoleInfoHeader";
@@ -13,6 +12,7 @@ import QuestionCard from "../../components/Cards/QuestionCard";
 import AIResponseView from "./components/AIResponseView";
 import Drawer from "../../components/Drawer";
 import SkeletonLoader from "../../components/Loaders/SkeletonLoader";
+import Spinnerloader from "../../components/Loaders/SpinnerLoader";
 
 const InterviewPrep = () => {
   const { sessionId } = useParams();
@@ -21,7 +21,7 @@ const InterviewPrep = () => {
   const [openLeanMoreDrawer, setOpenLeanMoreDrawer] = useState(false);
   const [explanation, setExplanation] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isUpdateLoger, setIsUpdateLoger] = useState(false);
+  const [isUpdateLoader, setIsUpdateLoader] = useState(false);
 
   const fetchSessionDetailsById = async () => {
     try {
@@ -77,7 +77,40 @@ const InterviewPrep = () => {
     }
   };
 
-  const uploadMoreQuestion = async () => {};
+  const uploadMoreQuestion = async () => {
+    try {
+      setIsUpdateLoader(true);
+      const aiResponse = await axiosInstane.post(
+        API_PATHS.AI.GENERATE_QUESTIONS,
+        {
+          role: sessionData?.role,
+          experience: sessionData?.experience,
+          topicsToFocus: sessionData?.topicsToFocus,
+          numberOfQuestions: 10,
+        }
+      );
+      const generateQuestions = aiResponse.data;
+      const response = await axiosInstane.post(
+        API_PATHS.QUESTION.ADD_TO_SESSION,
+        {
+          sessionId,
+          questions: generateQuestions,
+        }
+      );
+      if (response.data) {
+        toast.success("More Q&A added");
+        fetchSessionDetailsById();
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setErrorMsg(error.response.data.message);
+      } else {
+        setErrorMsg("Something Went Wrong. Please Try Again");
+      }
+    } finally {
+      setIsUpdateLoader(false);
+    }
+  };
 
   useEffect(() => {
     if (sessionId) {
@@ -136,6 +169,24 @@ const InterviewPrep = () => {
                           isPinned={data?.isPinned}
                           onTogglePin={() => toggleQuestionPinStatus(data._id)}
                         />
+
+                        {!isLoading &&
+                          sessionData?.questions?.length == index + 1 && (
+                            <div className="flex items-center justify-center mt-5">
+                              <button
+                                className="flex items-center gap-3 text-sm text-white font-medium bg-black px-5 py-2 mr-2 rounded  text-nowrap cursor-pointer "
+                                disabled={isLoading || isUpdateLoader}
+                                onClick={uploadMoreQuestion}
+                              >
+                                {isUpdateLoader ? (
+                                  <Spinnerloader />
+                                ) : (
+                                  <LuListCollapse className="text-lg" />
+                                )}{" "}
+                                Load More
+                              </button>
+                            </div>
+                          )}
                       </>
                     </motion.div>
                   );
