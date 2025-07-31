@@ -67,7 +67,7 @@ const LandingPage = () => {
               </p>
               <button
                 className="bg-black text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-yellow-100 hover:text-black border border-yellow-50 hover:border-yellow-300 transition-colors cursor-pointer"
-                // onClick={handleCTA}
+                onClick={handleCTA}
               >
                 Get Started
               </button>
